@@ -5,6 +5,7 @@ import requests
 from dotenv import load_dotenv
 import argparse
 
+
 def shorten_link(api_key, user_url):
 
     headers = {
@@ -51,16 +52,14 @@ if __name__ == "__main__":
     )
     parser.add_argument('link', help='Ваша ссылка')
     args = parser.parse_args()
-    print(args.link)
-    user_url = args.link
-    parsed_url = urlparse(user_url)
+    parsed_url = urlparse(args.link)
     url_without_scheme = f"{parsed_url.netloc}{parsed_url.path}"
 
     
     try:
-        if is_bitlink(user_url):
+        if is_bitlink(args.link):
             print('Количество кликов', count_clicks(api_key, url_without_scheme))
         else:
-            print('Битлинк', shorten_link(api_key, user_url))
+            print('Битлинк', shorten_link(api_key, args.link))
     except requests.exceptions.HTTPError:
-        print("Введена неверная ссылка")
+        print("Ошибка при запросе.Вы ввели неверную ссылку или неверный токен")
